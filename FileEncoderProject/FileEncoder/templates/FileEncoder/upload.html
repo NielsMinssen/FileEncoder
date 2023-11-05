@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Encoder</title>
+</head>
+<body>
+    <h1>Upload a file to encode</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload and Encode</button>
+    </form>
+</body>
+</html>
