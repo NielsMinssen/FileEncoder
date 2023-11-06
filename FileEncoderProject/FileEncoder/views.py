@@ -16,7 +16,7 @@ def file_upload_view(request):
 
             if action == 'detect':
                 # Read the file content
-                content = uploaded_file.read()
+                content = uploaded_file.read(10000)
                 # Detect encoding
                 result = chardet.detect(content)
                 encoding = result['encoding']
@@ -29,25 +29,32 @@ def file_upload_view(request):
                     'confidence': confidence
                 })
             elif action == 'encode':
-                file_content = uploaded_file.read()
+                if uploaded_file.size > 5 * 1024 * 1024:  # 5 MB limit
+                    context = {
+                        'form': form,
+                        'error_message': "The file size should not exceed 5 MB.",
+                    }
+                    return render(request, 'FileEncoder/upload.html', context)
+                else:
+                    file_content = uploaded_file.read()
 
-                # Use chardet to detect the encoding
-                detected_encoding = chardet.detect(file_content)['encoding']
+                    # Use chardet to detect the encoding
+                    detected_encoding = chardet.detect(file_content)['encoding']
 
-                # Assume a default encoding if chardet is not sure
-                original_encoding = detected_encoding if detected_encoding is not None else 'utf-8'
+                    # Assume a default encoding if chardet is not sure
+                    original_encoding = detected_encoding if detected_encoding is not None else 'utf-8'
 
-                # You might want to reset the file read pointer to the start if you'll read it again
-                uploaded_file.seek(0)
+                    # You might want to reset the file read pointer to the start if you'll read it again
+                    uploaded_file.seek(0)
 
-                # Convert the encoding
-                new_file_path = convert_file_encoding(uploaded_file, original_encoding, request.POST['encoding'])
+                    # Convert the encoding
+                    new_file_path = convert_file_encoding(uploaded_file, original_encoding, request.POST['encoding'])
 
-                # Prepare response to download the new file
-                with open(new_file_path, 'rb') as f:
-                    response = HttpResponse(f, content_type='application/octet-stream')
-                    response['Content-Disposition'] = f'attachment; filename="{uploaded_file.name}"'
-                    return response
+                    # Prepare response to download the new file
+                    with open(new_file_path, 'rb') as f:
+                        response = HttpResponse(f, content_type='application/octet-stream')
+                        response['Content-Disposition'] = f'attachment; filename="{uploaded_file.name}"'
+                        return response
     else:
         form = FileUploadForm()
 
