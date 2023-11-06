@@ -12,6 +12,12 @@ def file_upload_view(request):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = request.FILES['file']
+            if not uploaded_file.name.lower().endswith(('.txt', '.csv')):
+                # Si le fichier n'est pas un fichier plat, on renvoie un message d'erreur
+                return render(request, 'FileEncoder/upload.html', {
+                    'form': form,
+                    'error_file': "Please upload a flat file (.txt, .csv)."
+                })
             action = request.POST.get('action')
 
             if action == 'detect':
@@ -32,7 +38,7 @@ def file_upload_view(request):
                 if uploaded_file.size > 5 * 1024 * 1024:  # 5 MB limit
                     context = {
                         'form': form,
-                        'error_message': "The file size should not exceed 5 MB.",
+                        'error_size': "The file size should not exceed 5 MB.",
                     }
                     return render(request, 'FileEncoder/upload.html', context)
                 else:

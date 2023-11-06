@@ -45,6 +45,35 @@
         form input[type="submit"]:hover {
             background-color: #003d82;
         }
+        .file-upload-form {
+    /* Your form styles */
+        }
+
+        .custom-file-upload {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .file-upload-btn {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px 15px;
+            text-align: center;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-upload-btn:hover {
+            background: #0056b3;
+        }
+
+        .submit-btn {
+            /* Your submit button styles */
+        }
     </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -70,9 +99,14 @@
                     Please re-select your file before "Upload and encode".
                 </div>
                 {% endif %}
-                {% if error_message %}
+                {% if error_file %}
                 <div class="alert alert-danger" role="alert">
-                    {{ error_message }}
+                    {{ error_file }}
+                </div>
+                {% endif %}
+                {% if error_size %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error_size }}
                 </div>
                 {% endif %}
                 <button type="submit" name="action" value="detect" class="btn btn-info btn-block">Detect Encoding
