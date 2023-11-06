@@ -8,7 +8,11 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Upload and Encode</button>
+        {% if detected_encoding %}
+    <p>Detected Encoding: {{ detected_encoding }} (Confidence: {{ confidence }})</p>
+        {% endif %}
+        <button type="submit" name="action" value="detect">Detect Encoding</button>
+        <button type="submit" name="action" value="encode">Upload and Encode</button>
     </form>
 </body>
 </html>
