@@ -37,5 +37,5 @@ COMMON_ENCODINGS = [
 ]
 
 class FileUploadForm(forms.Form):
-    file = forms.FileField()
-    encoding = forms.ChoiceField(choices=COMMON_ENCODINGS)
+    file = forms.FileField(label='')
+    encoding = forms.ChoiceField(choices=COMMON_ENCODINGS,label='Target encoding')

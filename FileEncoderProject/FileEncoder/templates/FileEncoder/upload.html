@@ -1,21 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>File Encoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        form p {
+            margin-bottom: 15px;
+        }
+        form p label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        form input[type="text"],
+        form input[type="file"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Make sure padding doesn't affect overall width */
+        }
+        form input[type="submit"] {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        form input[type="submit"]:hover {
+            background-color: #003d82;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Upload a file to encode</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if detected_encoding %}
-            <p>Detected Encoding: {{ detected_encoding }} (Confidence: {{ confidence }})</p>
-        {% endif %}
-        {% if error_message %}
-            <p style="color: red;">{{ error_message }}</p>
-        {% endif %}
-        <button type="submit" name="action" value="detect">Detect Encoding</button>
-        <button type="submit" name="action" value="encode">Upload and Encode</button>
-    </form>
+<div class="container mt-5">
+    <!-- App Title -->
+    <div class="row justify-content-center mb-4">
+        <div class="col text-center">
+            <h1>File Encoding Converter</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <!-- Form Column -->
+        <div class="col-md-6 form-container">
+            <h1>Upload a file to encode</h1>
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if detected_encoding %}
+                <div class="alert alert-info" role="alert">
+                    Detected Encoding: {{ detected_encoding }} (Confidence: {{ confidence }})
+                </div>
+                {% endif %}
+                {% if error_message %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                </div>
+                {% endif %}
+                <button type="submit" name="action" value="detect" class="btn btn-info btn-block">Detect Encoding
+                </button>
+                <button type="submit" name="action" value="encode" class="btn btn-success btn-block">Upload and Encode
+                </button>
+            </form>
+        </div>
+
+        <!-- Information Column -->
+        <div class="col-md-6">
+            <div class="info-panel">
+                <h2>About Encoding</h2>
+                <p>Encoding is a process that converts data into a particular format for efficient storage and
+                    transmission. For text files, encoding determines how characters are represented as bytes.</p>
+                <h2>Flat Files Only</h2>
+                <p>This tool works with flat files like TXT or CSV. These files store data in plain text and need
+                    specific encoding. Binary files like XLSX or images handle data differently and don't rely on text
+                    encoding.</p>
+                <h2>Size Limit</h2>
+                <p>The maximum file size allowed is 5 MB. This limit ensures faster processing and prevents server
+                    overload. Please make sure your file complies with this restriction.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and Popper.js for Bootstrap components to work -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
