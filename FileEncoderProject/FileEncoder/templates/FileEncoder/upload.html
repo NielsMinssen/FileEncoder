@@ -66,7 +66,8 @@
                 {{ form.as_p }}
                 {% if detected_encoding %}
                 <div class="alert alert-info" role="alert">
-                    Detected Encoding: {{ detected_encoding }} (Confidence: {{ confidence }})
+                    Detected Encoding: {{ detected_encoding }} (Confidence: {{ confidence }}%)<br>
+                    Please re-select your file before "Upload and encode".
                 </div>
                 {% endif %}
                 {% if error_message %}

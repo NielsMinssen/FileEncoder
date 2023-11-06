@@ -20,7 +20,7 @@ def file_upload_view(request):
                 # Detect encoding
                 result = chardet.detect(content)
                 encoding = result['encoding']
-                confidence = result['confidence']
+                confidence = result['confidence'] *100
                 # Redirect to a new URL or render the same page with the detected encoding
                 # You can pass the detected encoding in the context or as a GET parameter
                 return render(request, 'FileEncoder/upload.html', {
