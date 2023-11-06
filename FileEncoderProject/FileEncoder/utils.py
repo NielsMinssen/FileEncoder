@@ -2,7 +2,7 @@
 import chardet
 import pandas as pd
 
-def convert_file_encoding(uploaded_file, original_encoding, target_encoding='utf-8'):
+def convert_file_encoding(uploaded_file, original_encoding, target_encoding):
     # Determine the file type (extension)
     file_name = uploaded_file.name
     extension = file_name.split('.')[-1].lower()

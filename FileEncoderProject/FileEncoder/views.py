@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.core.files import File
 import chardet  # Make sure chardet is imported
 
+
 def file_upload_view(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
@@ -24,7 +25,7 @@ def file_upload_view(request):
             uploaded_file.seek(0)
 
             # Convert the encoding
-            new_file_path = convert_file_encoding(uploaded_file, original_encoding)
+            new_file_path = convert_file_encoding(uploaded_file, original_encoding, request.POST['encoding'])
 
             # Prepare response to download the new file
             with open(new_file_path, 'rb') as f:
