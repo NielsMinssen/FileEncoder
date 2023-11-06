@@ -1,65 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>File Encoder</title>
-    <!-- Bootstrap CSS for styling (optional) -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-
-<div class="container mt-4">
     <h1>Upload a file to encode</h1>
-    <form id="upload-form" class="mb-3">
-        <!-- CSRF Token is required for form submission -->
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" id="fileInput" name="file" class="form-control mb-2">
-        <select name="encoding" class="form-control mb-2">
-            <option value="utf-8">UTF-8</option>
-            <option value="windows-1252">Windows-1252</option>
-            <!-- Add other options as needed -->
-        </select>
-        <button type="submit" class="btn btn-primary">Upload and Encode</button>
+        {{ form.as_p }}
+        <button type="submit">Upload and Encode</button>
     </form>
-    <div id="result" class="mt-3"></div>
-</div>
-
-<script>
-    document.getElementById('upload-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var resultDiv = document.getElementById('result');
-
-        fetch("{% url 'file-upload' %}", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                // Include CSRF token for Django form submission
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.blob();
-            } else {
-                resultDiv.innerText = 'Server error: ' + response.statusText;
-                throw new Error('Server response was not ok.');
-            }
-        }).then(blob => {
-            // Create a link element, use the blob for the href, and simulate a click to download the file
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = 'encoded_file.txt'; // Set the default filename here
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(downloadUrl);
-            resultDiv.innerText = 'File successfully processed and downloaded.';
-        }).catch(error => {
-            console.error('Fetch error:', error);
-            resultDiv.innerText = 'Fetch error: ' + error.message;
-        });
-    });
-</script>
-
 </body>
 </html>
